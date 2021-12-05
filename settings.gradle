@@ -5,5 +5,7 @@ pluginManagement {
 }
 rootProject.name = 'cheese-pay'
 include 'core'
-include 'api'
 include 'admin'
+include 'zuul'
+include 'auth'
+include 'api'

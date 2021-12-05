@@ -1,0 +1,29 @@
+server:
+  port: 8081
+#jdbc:
+#  driverClassName: com.mysql.cj.jdbc.Driver
+#  url: jdbc:mysql://localhost:3306/cheese?serverTimezone=UTC
+#  username: root
+#  password: qwe123!@#
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cheese?serverTimezone=UTC
+    username: root
+    password: qwe123!@#
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
+jwt:
+  private-key:
+    path: auth/private-key
+
+
