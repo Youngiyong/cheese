@@ -1,5 +1,6 @@
 package com.cheese.core.domain.admin;
 
+import com.cheese.core.domain.BaseTimeEntity;
 import com.cheese.core.domain.adminRole.AdminRole;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class Admin {
+public class Admin extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,14 +43,6 @@ public class Admin {
 
     @Column(name ="isActive", nullable = false)
     private int isActive;
-
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", insertable = false)
-    private LocalDateTime updatedAt;
 
     @LastModifiedDate
     @Column(name = "deleted_at", insertable = false)
