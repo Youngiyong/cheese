@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'cheese'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'qwe123!@#'
+      MYSQL_ROOT_PASSWORD: 'qwe123!@#'
+      TZ: Asia/Seoul
+    ports:
+      - '3306:3306'
+    command:
+      - --character-set-server=utf8
+      - --collation-server=utf8_general_ci
+    volumes:
+      - ./db/mysql/data:/var/lib/mysql
+      - ./db/mysql/init:/docker-entrypoint-initdb.d
+    platform: linux/x86_64

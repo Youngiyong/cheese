@@ -20,4 +20,6 @@ public class AdminRolePrivilege {
     @Column(length = 20)
     private EAdminRolePrivilege name;
 
+    @Column(length = 50)
+    private String description;
 }
