@@ -113,6 +113,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
 		// will be using asymmetric key for signing and verifying the token
 		tokenConverter.setSigningKey(getSigningKey());
+		tokenConverter.setVerifierKey(getSigningKey());
 		return tokenConverter;
 	}
 	
