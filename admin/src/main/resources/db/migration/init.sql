@@ -135,6 +135,7 @@ CREATE TABLE `cheese`.`terms` (
                                   `description` TEXT NOT NULL,
                                   `is_essential` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '필수/선택 여부(1: 필수, 0: 선택)',
                                   `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '사용 여부(1: 활성, 0: 비활성)',
+                                  `type` TINYINT(10) NOT NULL DEFAULT 1 COMMENT '타입 (1: 회원가입, 2: 질병청, 3: 추가 타입..)',
                                   `sort` TINYINT(100) NOT NULL DEFAULT 100 COMMENT '조회 순서',
                                   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                   `updated_at` TIMESTAMP NULL,
@@ -151,26 +152,37 @@ CREATE TABLE `cheese`.`term_logs` (
                                       PRIMARY KEY (`id`))
 ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
-CREATE TABLE `cheese`.`users` (
-                                  `id` INT NOT NULL AUTO_INCREMENT,
-                                  `name` VARCHAR(30) NOT NULL COMMENT '유저 이름',
-                                  `cp` VARCHAR(20) NOT NULL COMMENT '휴대폰번호',
-                                  `sex` VARCHAR(45) NULL COMMENT '성별',
-                                  `birth_year` VARCHAR(4) NULL COMMENT '년',
-                                  `birth_month` VARCHAR(2) NULL COMMENT '월',
-                                  `birth_day` VARCHAR(2) NULL COMMENT '일',
-                                  `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '활성 여부 (1: 활성, 0: 비활성)',
-                                  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
-                                  `updated_at` TIMESTAMP NULL COMMENT '업데이트 일자',
-                                  `deleted_at` TIMESTAMP NULL COMMENT '탈퇴 일자',
-                                  `last_login` TIMESTAMP NULL COMMENT '마지막 로그인일자 (특정 기간이 지나면 비활성 계정으로 전환을 위해 생성)\\n',
-                                  PRIMARY KEY (`id`))
-    ENGINE = InnoDb DEFAULT CHARSET=utf8;
+# CREATE TABLE `cheese`.`users` (
+#                                   `id` INT NOT NULL AUTO_INCREMENT,
+#                                   `name` VARCHAR(30) NOT NULL COMMENT '유저 이름',
+#                                   `cp` VARCHAR(20) NOT NULL COMMENT '휴대폰번호',
+#                                   `sex` VARCHAR(45) NULL COMMENT '성별',
+#                                   `birth_year` VARCHAR(4) NULL COMMENT '년',
+#                                   `birth_month` VARCHAR(2) NULL COMMENT '월',
+#                                   `birth_day` VARCHAR(2) NULL COMMENT '일',
+#                                   `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '활성 여부 (1: 활성, 0: 비활성)',
+#                                   `is_account` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '계좌 활성 여부 (1: 활성, 0: 비활성)',
+#                                   `is_qr` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'QR 활성 여부 (1: 활성, 0: 비활성)',
+#                                   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
+#                                   `updated_at` TIMESTAMP NULL COMMENT '업데이트 일자',
+#                                   `deleted_at` TIMESTAMP NULL COMMENT '탈퇴 일자',
+#                                   `last_login` TIMESTAMP NULL COMMENT '마지막 로그인일자 (특정 기간이 지나면 비활성 계정으로 전환을 위해 생성)\\n',
+#                                   PRIMARY KEY (`id`))
+#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
+#
+#
+# CREATE TABLE `cheese`.`user_roles` (
+#                                   `id` INT NOT NULL AUTO_INCREMENT,
+#                                   `name` VARCHAR(30) NOT NULL unique  COMMENT '권한명',
+#                                   `description` VARCHAR(100) NOT NULL COMMENT '권한 설명',
+#                                   PRIMARY KEY (`id`))
+#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `cheese`.`user_roles` (
-                                  `id` INT NOT NULL AUTO_INCREMENT,
-                                  `name` VARCHAR(30) NOT NULL unique  COMMENT '권한명',
-                                  `description` VARCHAR(100) NOT NULL COMMENT '권한 설명',
-                                  PRIMARY KEY (`id`))
-    ENGINE = InnoDb DEFAULT CHARSET=utf8;
+# create table user_role_join
+# (
+#     id         INT  not null
+#         primary key AUTO_INCREMENT,
+#     user_id int not null,
+#     role_id int not null
+# ) ENGINE = InnoDb DEFAULT CHARSET=utf8;
