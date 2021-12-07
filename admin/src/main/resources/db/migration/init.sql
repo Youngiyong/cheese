@@ -47,13 +47,20 @@ create table admin_role_join
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 
+
+
 INSERT INTO admin (id, username, email, password) VALUES (1, 'test1', 'test1@test.com', '$2a$10$3MUolsky4nfLXHOgP3EHS.zRN4OM/hbgvnihP.VJdnwpdBqpbv3mC');
 INSERT INTO admin (id, username, email, password) VALUES (2, 'test2', 'test2@test.com', '$2a$10$3MUolsky4nfLXHOgP3EHS.zRN4OM/hbgvnihP.VJdnwpdBqpbv3mC');
 INSERT INTO admin (id, username, email, password) VALUES (3, 'admin', 'admin@example.com', '$2a$10$3MUolsky4nfLXHOgP3EHS.zRN4OM/hbgvnihP.VJdnwpdBqpbv3mC');
 
+# ROLE_ADMIN,
+# ROLE_ADMIN_CUSTOM,
+# ROLE_ADMIN_READ
+
 INSERT INTO admin_roles(id, name, description) VALUES (1, 'ROLE_ADMIN', '시스템관리자');
-INSERT INTO admin_roles(id, name, description) VALUES (2, 'ROLE_MANAGER', '중간관리자');
-INSERT INTO admin_roles(id, name, description) VALUES (3, 'ROLE_USER', '일반관리자(읽기)');
+INSERT INTO admin_roles(id, name, description) VALUES (2, 'ROLE_ADMIN_CUSTOM', '커스텀관리자');
+INSERT INTO admin_roles(id, name, description) VALUES (3, 'ROLE_ADMIN_READ', '일반관리자(읽기)');
+
 
 INSERT INTO admin_role_join (admin_id, role_id) VALUES (1, 2);
 INSERT INTO admin_role_join (admin_id, role_id) VALUES (2, 3);
@@ -129,12 +136,11 @@ INSERT INTO users (id, username, password, enabled) VALUES (1, 'test_user', '$2a
 
 INSERT INTO authorities (username, authority) VALUES ('test_user', 'ADMIN');
 
-
+-- 약관 재동의를 어떻게 받을것인지 추후 논의
 CREATE TABLE `cheese`.`terms` (
                                   `id` INT NOT NULL AUTO_INCREMENT,
                                   `description` TEXT NOT NULL,
                                   `is_essential` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '필수/선택 여부(1: 필수, 0: 선택)',
-                                  `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '사용 여부(1: 활성, 0: 비활성)',
                                   `type` TINYINT(10) NOT NULL DEFAULT 1 COMMENT '타입 (1: 회원가입, 2: 질병청, 3: 추가 타입..)',
                                   `sort` TINYINT(100) NOT NULL DEFAULT 100 COMMENT '조회 순서',
                                   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
