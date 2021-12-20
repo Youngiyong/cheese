@@ -11,7 +11,7 @@ INSERT INTO
 )
 VALUES
     (
-        'client',
+        'admin',
         '$2a$10$4R/rWflN2RDiGZ3TvGplN.Z7fpILYAop9kJKqk7FgZnHCGhwFSGYS'
         'oauth2-resource',
         'read,write',
@@ -20,6 +20,12 @@ VALUES
         30,
         21600
     );
+
+INSERT INTO oauth_client_details
+(client_id, client_secret, scope, authorized_grant_types,
+ web_server_redirect_uri, authorities, access_token_validity,
+ refresh_token_validity, additional_information, autoapprove)
+VALUES ('testclient', '$2a$10$4R/rWflN2RDiGZ3TvGplN.Z7fpILYAop9kJKqk7FgZnHCGhwFSGYS', 'all', 'password,refresh_token', null, null, 36000, 36000, null, true);
 
 
 -- password 1234

@@ -22,8 +22,10 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5Dialect
-jwt:
-  private-key:
-    path: "classpath:private-key"
+#jwt:
+#  private-key:
+#    path: "classpath:private-key"
+#  public-key:
+#    path: "classpath:public-key"
 
 

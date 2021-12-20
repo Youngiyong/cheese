@@ -1,6 +1,7 @@
 package com.cheese.admin.service;
 
 
+
 import com.cheese.core.constants.CustomExceptionCode;
 import com.cheese.core.domain.admin.Admin;
 import com.cheese.core.domain.admin.AdminRepository;
@@ -10,7 +11,6 @@ import com.cheese.core.domain.enums.EAdminRole;
 import com.cheese.core.dto.request.SignupRequest;
 import com.cheese.core.dto.response.BaseResponse;
 import com.cheese.core.exception.CustomException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,11 +22,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class AdminDetailsServiceImpl implements UserDetailsService {
 
+    @Autowired
     AdminRepository adminRepository;
 
+    @Autowired
     AdminRoleRepository adminRoleRepository;
 
     @Transactional
@@ -36,7 +37,6 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
         if (admin == null) {
             throw new UsernameNotFoundException("Admin " + username + " can not be found");
         }
-
 
         return AdminDetailsImpl.build(admin);
     }
@@ -72,7 +72,7 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
             for (String role: strRoles){
                 switch (role) {
                     case "ADMIN":
-                        AdminRole adminRole = adminRoleRepository.findByName(EAdminRole.ROLE_ADMIN_SYSTEM).get();
+                        AdminRole adminRole = adminRoleRepository.findByName(EAdminRole.ROLE_ADMIN).get();
 
                         if(adminRole==null){
                             throw new CustomException(CustomExceptionCode.REQUEST_ROLE_NOT_FOUND);

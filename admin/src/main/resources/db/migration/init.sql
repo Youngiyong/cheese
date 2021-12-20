@@ -126,69 +126,160 @@ CREATE TABLE IF NOT EXISTS authorities (
     )
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
+create table oauth_client_details (
+                                      client_id varchar(256) primary key,
+                                      resource_ids varchar(256),
+                                      client_secret varchar(256),
+                                      scope varchar(256),
+                                      authorized_grant_types varchar(256),
+                                      web_server_redirect_uri varchar(256),
+                                      authorities varchar(256),
+                                      access_token_validity integer,
+                                      refresh_token_validity integer,
+                                      additional_information varchar(4096),
+                                      autoapprove varchar(256)
+) ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+create table oauth_access_token (
+                                    token_id VARCHAR(256),
+                                    token    BLOB,
+                                    authentication_id VARCHAR(256) PRIMARY KEY,
+                                    user_name VARCHAR(256),
+                                    client_id VARCHAR(256),
+                                    authentication    varbinary(5000),
+                                    refresh_token VARCHAR(256)
+) ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+create table oauth_refresh_token (
+                                     token_id VARCHAR(256),
+                                     token BLOB,
+                                     authentication BLOB
+) ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+
+# password secret
 INSERT INTO oauth_client_details
    (client_id, client_secret, scope, authorized_grant_types,
    web_server_redirect_uri, authorities, access_token_validity,
    refresh_token_validity, additional_information, autoapprove)
-VALUES ('testclient', '$2a$10$3MUolsky4nfLXHOgP3EHS.zRN4OM/hbgvnihP.VJdnwpdBqpbv3mC', 'all', 'password,refresh_token', null, null, 36000, 36000, null, true);
+VALUES ('testclient', '$2a$10$4R/rWflN2RDiGZ3TvGplN.Z7fpILYAop9kJKqk7FgZnHCGhwFSGYS', 'all', 'password,refresh_token', null, null, 36000, 36000, null, true);
 
-INSERT INTO users (id, username, password, enabled) VALUES (1, 'test_user', '$2a$10$3MUolsky4nfLXHOgP3EHS.zRN4OM/hbgvnihP.VJdnwpdBqpbv3mC', 1);
-
-INSERT INTO authorities (username, authority) VALUES ('test_user', 'ADMIN');
-
--- 약관 재동의를 어떻게 받을것인지 추후 논의
-CREATE TABLE `cheese`.`terms` (
-                                  `id` INT NOT NULL AUTO_INCREMENT,
-                                  `description` TEXT NOT NULL,
-                                  `is_essential` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '필수/선택 여부(1: 필수, 0: 선택)',
-                                  `type` TINYINT(10) NOT NULL DEFAULT 1 COMMENT '타입 (1: 회원가입, 2: 질병청, 3: 추가 타입..)',
-                                  `sort` TINYINT(100) NOT NULL DEFAULT 100 COMMENT '조회 순서',
-                                  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                  `updated_at` TIMESTAMP NULL,
-                                  `deleted_at` TIMESTAMP NULL,
-                                  PRIMARY KEY (`id`))
+CREATE TABLE `cheese`.`categories` (
+                                       `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                       `name` VARCHAR(32) NOT NULL UNIQUE  COMMENT '카테고리명',
+                                       `sort` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '정렬 순서',
+                                       `is_use` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '사용 여부(1: 사용, 0: 미사용)',
+                                       `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                       `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                       `deleted_at` timestamp NULL DEFAULT NULL,
+                                       PRIMARY KEY (`id`)
+) COMMENT = '카테고리'
 ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
-CREATE TABLE `cheese`.`term_logs` (
-                                      `id` BIGINT NOT NULL AUTO_INCREMENT,
-                                      `user_id` INT NOT NULL COMMENT '유저 아이디\n',
-                                      `term_id` INT NOT NULL COMMENT '약관 id',
-                                      `is_agree` VARCHAR(45) NOT NULL DEFAULT '1' COMMENT '동의 여부',
-                                      `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
-                                      PRIMARY KEY (`id`))
-ENGINE = InnoDb DEFAULT CHARSET=utf8;
+INSERT INTO categories (name) VALUES ('편의점/마트');
+INSERT INTO categories (name) VALUES ('음식점/요식업');
+INSERT INTO categories (name) VALUES ('카페/디저트');
+INSERT INTO categories (name) VALUES ('헤어/네일');
+INSERT INTO categories (name) VALUES ('의류/악세서리/렌즈');
+INSERT INTO categories (name) VALUES ('여행/숙박');
+INSERT INTO categories (name) VALUES ('오락시설');
+INSERT INTO categories (name) VALUES ('병원/약국');
+INSERT INTO categories (name) VALUES ('애견/애견용품');
+INSERT INTO categories (name) VALUES ('학원/아카데미');
+INSERT INTO categories (name) VALUES ('헬스/요가');
+INSERT INTO categories (name) VALUES ('주류/주점');
+INSERT INTO categories (name) VALUES ('식자재/유통');
+INSERT INTO categories (name) VALUES ('가구/인테리어');
+INSERT INTO categories (name) VALUES ('가전/통신');
+INSERT INTO categories (name) VALUES ('부동산/임대');
+INSERT INTO categories (name) VALUES ('기업/기관');
+INSERT INTO categories (name) VALUES ('기타');
 
-# CREATE TABLE `cheese`.`users` (
-#                                   `id` INT NOT NULL AUTO_INCREMENT,
-#                                   `name` VARCHAR(30) NOT NULL COMMENT '유저 이름',
-#                                   `cp` VARCHAR(20) NOT NULL COMMENT '휴대폰번호',
-#                                   `sex` VARCHAR(45) NULL COMMENT '성별',
-#                                   `birth_year` VARCHAR(4) NULL COMMENT '년',
-#                                   `birth_month` VARCHAR(2) NULL COMMENT '월',
-#                                   `birth_day` VARCHAR(2) NULL COMMENT '일',
-#                                   `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '활성 여부 (1: 활성, 0: 비활성)',
-#                                   `is_account` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '계좌 활성 여부 (1: 활성, 0: 비활성)',
-#                                   `is_qr` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'QR 활성 여부 (1: 활성, 0: 비활성)',
-#                                   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
-#                                   `updated_at` TIMESTAMP NULL COMMENT '업데이트 일자',
-#                                   `deleted_at` TIMESTAMP NULL COMMENT '탈퇴 일자',
-#                                   `last_login` TIMESTAMP NULL COMMENT '마지막 로그인일자 (특정 기간이 지나면 비활성 계정으로 전환을 위해 생성)\\n',
-#                                   PRIMARY KEY (`id`))
-#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
-#
-#
-# CREATE TABLE `cheese`.`user_roles` (
-#                                   `id` INT NOT NULL AUTO_INCREMENT,
-#                                   `name` VARCHAR(30) NOT NULL unique  COMMENT '권한명',
-#                                   `description` VARCHAR(100) NOT NULL COMMENT '권한 설명',
-#                                   PRIMARY KEY (`id`))
-#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
+CREATE TABLE `cheese`.`store_groups` (
+                                       `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                       `name` VARCHAR(32) NOT NULL UNIQUE  COMMENT '그룹명',
+                                       `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                       `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                       `deleted_at` timestamp NULL DEFAULT NULL,
+                                       PRIMARY KEY (`id`)
+) COMMENT = '스토어 그룹'
+    ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 
-# create table user_role_join
-# (
-#     id         INT  not null
-#         primary key AUTO_INCREMENT,
-#     user_id int not null,
-#     role_id int not null
-# ) ENGINE = InnoDb DEFAULT CHARSET=utf8;
+CREATE TABLE `cheese`.`stores` (
+                                         `id` INT UNSIGNED NOT NULL,
+                                         `store_number` VARCHAR(20) NULL DEFAULT NULL COMMENT '스토어 고유 아이디',
+                                         `store_group_id` INT UNSIGNED NOT NULL COMMENT '스토어 그룹 아이디',
+                                         `category_id` INT UNSIGNED NOT NULL COMMENT '업종 카테고리 아이디',
+                                         `name` VARCHAR(50) NOT NULL COMMENT '가맹점명',
+                                         `email` VARCHAR(50) NOT NULL COMMENT '이메일',
+                                         `main_phone` VARCHAR(20) NOT NULL COMMENT '대표 번호',
+                                         `business_license_number` VARCHAR(300) NOT NULL COMMENT '사업자 등록번호',
+                                         `ceo` VARCHAR(20) NULL COMMENT '대표자명',
+                                         `ceo_phone` VARCHAR(20) DEFAULT NULL COMMENT '대표자 번호',
+                                         `fax` VARCHAR(20)  NULL COMMENT '팩스 번호',
+                                         `address` VARCHAR(256) DEFAULT NULL COMMENT '주소',
+                                         `address_extra` VARCHAR(256) DEFAULT NULL COMMENT '상세주소',
+                                         `homepage_url` VARCHAR(256) DEFAULT NULL COMMENT '홈페이지 주소',
+                                         `is_active` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '활성 여부',
+                                         `is_holiday` TINYINT(1) NOT NULL DEFAULT '0',
+                                         `is_contract_bond` TINYINT(1) unsigned NOT NULL DEFAULT 0 COMMENT '계약 이행 보증서 제출 여부',
+                                         `is_blacklist` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '블랙 리스트 여부 (1: 정상, 0: 블랙)',
+                                         `bank_name` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행명',
+                                             `bank_code` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행코드',
+                                         `bank_account` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행계좌',
+                                         `bank_account_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '계좌명',
+                                         `lat` VARCHAR(20) NULL DEFAULT NULL COMMENT '위도',
+                                         `lng` VARCHAR(20) NULL DEFAULT NULL COMMENT '경도',
+                                         `work_start` TIME NULL DEFAULT NULL COMMENT '매장운영시작시간',
+                                         `work_end` TIME NULL DEFAULT NULL COMMENT '매장운영종료시간',
+                                         `discount_items_reward` DECIMAL(5,2) NULL DEFAULT '0.00' COMMENT '적립율',
+                                         `deleted_reason` VARCHAR(200) NULL DEFAULT NULL COMMENT '삭제 이유',
+                                         `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
+                                         `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                         `deleted_at` TIMESTAMP NULL DEFAULT NULL COMMENT '삭제일자'
+) COMMENT = '스토어명'
+    ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `cheese`.`store_images` (
+                                         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                         `store_id` INT UNSIGNED NOT NULL,
+                                         `type` VARCHAR(16) NOT NULL COMMENT '이미지 타입 (사업자 등록증, 계약 이행 보증서 등)\\ncodes.group = \'SHOP_IMAGE\'',
+                                         `original` VARCHAR(1024) NOT NULL COMMENT 'host 제외한 URL',
+                                         `sort` TINYINT(4) NULL DEFAULT NULL COMMENT '순서',
+                                         `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                         `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                         `deleted_at` TIMESTAMP NULL DEFAULT NULL,
+                                         PRIMARY KEY (`id`)
+) COMMENT = '상점관련 이미지 (사업자등록증, 계약 이행 보증서,  상점 이미지 등)'
+    ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `cheese`.`store_items` (
+                                  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                  `item_number` VARCHAR(20) NULL DEFAULT NULL,
+                                  `store_id` INT UNSIGNED NOT NULL COMMENT '스토어 아이디',
+                                  `name` VARCHAR(100) NOT NULL COMMENT '상품명',
+                                  `description` VARCHAR(200) NULL DEFAULT NULL COMMENT '상품 설명',
+                                  `price` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT '가격',
+                                  `cook_time` TINYINT(3) UNSIGNED NULL DEFAULT '0' COMMENT '0 - 180분',
+                                  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '????',
+                                  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                  `deleted_at` TIMESTAMP NULL DEFAULT NULL COMMENT '삭제일',
+                                  PRIMARY KEY (`id`)
+) COMMENT = '상품'
+    ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cheese`.`store_item_images` (
+                                        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                        `item_id` INT UNSIGNED NOT NULL,
+                                        `type` VARCHAR(16) NOT NULL COMMENT '이미지 타입',
+                                        `original` VARCHAR(1024) NOT NULL COMMENT 'URL',
+                                        `sort` TINYINT(1) NULL DEFAULT NULL COMMENT '순서',
+                                        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                        `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                        `deleted_at` TIMESTAMP NULL DEFAULT NULL,
+                                        PRIMARY KEY (`id`)
+) COMMENT = '상품관련 이미지 (목록 썸네일, 상단, 중단, 하단 등)'
+    ENGINE = InnoDb DEFAULT CHARSET=utf8;

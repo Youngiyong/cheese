@@ -1,12 +1,12 @@
 server:
-  port: 8200
+  port: 9000
 
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cheese
-    username: root
-    password: qwe123!@#
+    url: jdbc:mysql://localhost:3306/cheese?serverTimezone=UTC
+    username: admin
+    password: dnflskfk!23
   config:
     activate:
       on-profile: dev
@@ -17,4 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+
+

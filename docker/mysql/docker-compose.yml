@@ -7,8 +7,8 @@ services:
     environment:
       MYSQL_DATABASE: 'cheese'
       MYSQL_USER: 'admin'
-      MYSQL_PASSWORD: 'qwe123!@#'
-      MYSQL_ROOT_PASSWORD: 'qwe123!@#'
+      MYSQL_PASSWORD: 'dnflskfk!23'
+      MYSQL_ROOT_PASSWORD: 'dnflskfk!23'
       TZ: Asia/Seoul
     ports:
       - '3306:3306'
