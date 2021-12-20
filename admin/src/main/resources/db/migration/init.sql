@@ -205,28 +205,31 @@ CREATE TABLE `cheese`.`store_groups` (
 ) COMMENT = '스토어 그룹'
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
+INSERT INTO `cheese`.`store_groups`(name) VALUES ('기용스토어그룹');
+INSERT INTO `cheese`.`store_groups`(name) VALUES ('에디스토어그룹');
+
+
 
 CREATE TABLE `cheese`.`stores` (
-                                         `id` INT UNSIGNED NOT NULL,
+                                         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                          `store_number` VARCHAR(20) NULL DEFAULT NULL COMMENT '스토어 고유 아이디',
                                          `store_group_id` INT UNSIGNED NOT NULL COMMENT '스토어 그룹 아이디',
                                          `category_id` INT UNSIGNED NOT NULL COMMENT '업종 카테고리 아이디',
                                          `name` VARCHAR(50) NOT NULL COMMENT '가맹점명',
-                                         `email` VARCHAR(50) NOT NULL COMMENT '이메일',
-                                         `main_phone` VARCHAR(20) NOT NULL COMMENT '대표 번호',
+                                         `email` VARCHAR(50) DEFAULT NULL COMMENT '이메일',
                                          `business_license_number` VARCHAR(300) NOT NULL COMMENT '사업자 등록번호',
-                                         `ceo` VARCHAR(20) NULL COMMENT '대표자명',
+                                         `ceo` VARCHAR(20) NOT NULL COMMENT '대표자명',
                                          `ceo_phone` VARCHAR(20) DEFAULT NULL COMMENT '대표자 번호',
-                                         `fax` VARCHAR(20)  NULL COMMENT '팩스 번호',
+                                         `fax` VARCHAR(20) DEFAULT  NULL COMMENT '팩스 번호',
                                          `address` VARCHAR(256) DEFAULT NULL COMMENT '주소',
                                          `address_extra` VARCHAR(256) DEFAULT NULL COMMENT '상세주소',
                                          `homepage_url` VARCHAR(256) DEFAULT NULL COMMENT '홈페이지 주소',
                                          `is_active` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '활성 여부',
                                          `is_holiday` TINYINT(1) NOT NULL DEFAULT '0',
                                          `is_contract_bond` TINYINT(1) unsigned NOT NULL DEFAULT 0 COMMENT '계약 이행 보증서 제출 여부',
-                                         `is_blacklist` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '블랙 리스트 여부 (1: 정상, 0: 블랙)',
+                                         `is_blacklist` TINYINT(1) unsigned NOT NULL DEFAULT 0 COMMENT '블랙 리스트 여부 (0: 정상, 1: 블랙)',
                                          `bank_name` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행명',
-                                             `bank_code` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행코드',
+                                         `bank_code` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행코드',
                                          `bank_account` VARCHAR(32) NULL DEFAULT NULL COMMENT '은행계좌',
                                          `bank_account_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '계좌명',
                                          `lat` VARCHAR(20) NULL DEFAULT NULL COMMENT '위도',
@@ -237,9 +240,28 @@ CREATE TABLE `cheese`.`stores` (
                                          `deleted_reason` VARCHAR(200) NULL DEFAULT NULL COMMENT '삭제 이유',
                                          `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
                                          `updated_at` TIMESTAMP NULL DEFAULT NULL,
-                                         `deleted_at` TIMESTAMP NULL DEFAULT NULL COMMENT '삭제일자'
+                                         `deleted_at` TIMESTAMP NULL DEFAULT NULL COMMENT '삭제일자',
+                                         PRIMARY KEY (`id`)
 ) COMMENT = '스토어명'
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+VALUES('AL1', 1, 1, '기용스토어', '에디', '01092069357', '1123-21132-12312');
+
+
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+VALUES('AL2', 1, 1, '기용스토어2', '에디', '01092069357', '1123-21132-12412');
+
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+VALUES('AL3', 1, 1, '기용스토어3', '에디', '01092069357', '1123-21132-12512');
+
+
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+VALUES('AL4', 1, 1, '기용스토어4', '에디', '01092069357', '1323-21132-12419');
+
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+VALUES('AL5', 1, 1, '기용스토어5', '에디', '01092069357', '1423-21132-12510');
 
 
 CREATE TABLE `cheese`.`store_images` (
