@@ -1,93 +1,87 @@
 package com.cheese.admin.advice;
 
-import com.cheese.admin.exception.ServerRuntimeException;
-import com.cheese.admin.model.Status;
-import com.cheese.admin.model.transport.AdapterServerResponse;
+import com.cheese.admin.error.ErrorCode;
+import com.cheese.admin.exception.CustomException;
+import com.cheese.admin.exception.InvalidParameterException;
+import com.cheese.admin.model.response.CustomErrorResponse;
+import com.cheese.admin.model.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.security.InvalidParameterException;
 
 @Slf4j
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ServerRuntimeException.class)
-    protected ResponseEntity<AdapterServerResponse> handleServerRuntimeException(ServerRuntimeException ex, WebRequest request) {
-        log.error("ServerRuntimeException {}({})", ex.getErrorCode(), ex.getErrorCode().getCode());
-        log.error(ex.getLocalizedMessage());
+    /**
+     * 지원하지 않은 HTTP method 호출 할 경우 발생
+     */
+//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+//    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+//        log.error("handleHttpRequestMethodNotSupportedException", e);
+//
+//        final ErrorResponse response = ErrorResponse
+//                .builder()
+//                .status(HttpStatus.METHOD_NOT_ALLOWED.value())
+//                .message(e.getMessage());
+//
+//        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+//    }
 
-        log.error("ServerRuntimeException::stack trace:", ex);
-        Throwable cause = ex.getCause();
-        log.error("ServerRuntimeException::cause: " + (cause == null ? "<none>" : cause.getMessage()));
+    /**
+     * Authentication 객체가 필요한 권한을 보유하지 않은 경우 발생합
+     */
+//    @ExceptionHandler(AccessDeniedException.class)
+//    protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
+//        log.error("handleAccessDeniedException", e);
+//
+//        final ErrorResponse response = ErrorResponse
+//                .builder()
+//                .status(ErrorCode.HANDLE_ACCESS_DENIED.getStatus())
+//                .message(e.getMessage());
+//
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
+//    }
 
-        if (cause != null) {
-            log.error("cause::stack trace: ", cause);
-        }
 
-        AdapterServerResponse serverResponse = new AdapterServerResponse();
-        serverResponse.setStatus(Status.FAILED);
-        serverResponse.setErrorMessage(ex.getMessage());
-        return new ResponseEntity<>(serverResponse, HttpStatus.BAD_REQUEST);
-    }
 
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ResponseEntity<AdapterServerResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
-        log.error("Unhandled Exception", ex);
-        log.error(ex.getMessage());
-
-        Throwable cause = ex.getCause();
-        log.error("Unhandled exception::cause: " + (cause == null ? "<none>" : cause.getMessage()));
-        if (cause != null) {
-            log.error("cause::stack trace: ", cause);
-        }
-
-        AdapterServerResponse serverResponse = new AdapterServerResponse();
-        serverResponse.setStatus(Status.FAILED);
-        serverResponse.setErrorMessage(ex.getMessage());
-        return new ResponseEntity<>(serverResponse, HttpStatus.METHOD_NOT_ALLOWED);
-    }
-
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<AdapterServerResponse> handleRestOfException(Exception ex, WebRequest request) {
-        log.error("Unhandled Exception", ex);
-        log.error(ex.getMessage());
-
-        Throwable cause = ex.getCause();
-        log.error("Unhandled exception::cause: " + (cause == null ? "<none>" : cause.getMessage()));
-        if (cause != null) {
-            log.error("cause::stack trace: ", cause);
-        }
-
-        AdapterServerResponse serverResponse = new AdapterServerResponse();
-        serverResponse.setStatus(Status.FAILED);
-        serverResponse.setErrorMessage(ex.getMessage());
-        return new ResponseEntity<>(serverResponse, HttpStatus.BAD_REQUEST);
-    }
-
+    /**
+     *   @Valid 검증 실패 시 Catch
+     */
     @ExceptionHandler(InvalidParameterException.class)
-    protected ResponseEntity<AdapterServerResponse> handleInvalidParameterException(InvalidParameterException ex) {
-        log.error("Unhandled Exception", ex);
-        log.error(ex.getMessage());
+    protected ResponseEntity<CustomErrorResponse> handleInvalidParameterException(InvalidParameterException e) {
+        log.error("handleInvalidParameterException", e);
+        ErrorCode errorCode = e.getErrorCode();
 
-        Throwable cause = ex.getCause();
-        log.error("Unhandled exception::cause: " + (cause == null ? "<none>" : cause.getMessage()));
-        if (cause != null) {
-            log.error("cause::stack trace: ", cause);
-        }
+        final CustomErrorResponse response = CustomErrorResponse
+                .builder()
+                .status(errorCode.getStatus())
+                .code(errorCode.getCode())
+                .errors(e.getErrors());
 
-        AdapterServerResponse serverResponse = new AdapterServerResponse();
-        serverResponse.setStatus(Status.FAILED);
-        serverResponse.setErrorMessage(ex.getMessage());
-        return new ResponseEntity<>(serverResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.resolve(errorCode.getStatus()));
     }
 
+    /**
+     *  CustomException을 상속받은 클래스가 예외를 발생 시킬 시, Catch하여 ErrorResponse를 반환한다.
+     */
+    @ExceptionHandler(CustomException.class)
+    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        log.error("handleAllException", e);
 
+        ErrorCode errorCode = e.getErrorCode();
+
+        ErrorResponse response = ErrorResponse
+                .builder()
+                .status(errorCode.getStatus())
+                .code(errorCode.getCode())
+                .message(e.toString());
+
+        return new ResponseEntity<>(response, HttpStatus.resolve(errorCode.getStatus()));
+    }
 }

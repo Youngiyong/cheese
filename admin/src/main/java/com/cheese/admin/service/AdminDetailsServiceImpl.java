@@ -8,7 +8,6 @@ import com.cheese.core.domain.adminRole.AdminRole;
 import com.cheese.core.domain.adminRole.AdminRoleRepository;
 import com.cheese.core.domain.enums.EAdminRole;
 import com.cheese.core.dto.request.SignupRequest;
-import com.cheese.core.dto.response.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,7 +39,7 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    public BaseResponse save(SignupRequest payload) throws UsernameNotFoundException {
+    public String save(SignupRequest payload) throws UsernameNotFoundException {
         if (adminRepository.existsByEmail(payload.getEmail()))
             System.out.println("hi");
             //            throw new CustomException(CustomExceptionCode.EMAIL_IS_EXIST);
@@ -108,8 +107,8 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
 
         user.setAdminRoles(roles);
         adminRepository.save(user);
-
-        return new BaseResponse(true, "OK");
+        return "ok";
+//        return new BaseResponse(true, "OK");
 
     }
 }
