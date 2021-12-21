@@ -1,4 +1,4 @@
-package com.cheese.core.domain.store;
+package com.cheese.core.domain.storeUser;
 
 
 import com.cheese.core.domain.BaseTimeEntity;
@@ -13,21 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "stores")
-public class Store extends BaseTimeEntity {
+@Table(name = "store_users")
+public class StoreUser extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;    // internal
-
-    @Column(nullable = false, length = 20)
-    private String storeNumber;
-
-    @Column
-    private Integer storeGroupId;
-
-    @Column
-    private Integer categoryId;
 
     @Column(nullable = false, length = 50)
     private String name;
@@ -35,68 +26,35 @@ public class Store extends BaseTimeEntity {
     @Column(length = 50)
     private String email;
 
-    @Column(nullable = false, length = 300)
-    private String businessLicenseNumber;
+    @Column(nullable = false, length = 1)
+    private String cp;
 
-    @Column(nullable = false, length = 20)
-    private String ceoName;
+    @Column(length = 4)
+    private String birthYear;
 
-    @Column(nullable = false, length = 20)
-    private String ceoPhone;
+    @Column(length = 2)
+    private String birthMonth;
 
-    @Column(length = 20)
-    private String fax;
+    @Column(length = 2)
+    private String birthDay;
 
-    @Column(length = 256)
-    private String address;
-
-    @Column(length = 256)
-    private String addressExtra;
-
-    @Column(length = 256)
-    private String homepageUrl;
+    @Column
+    private Boolean isStaff;
 
     @Column
     private Boolean isApprove;
 
     @Column
-    private Boolean isActive;
+    private Boolean isReceivePush;
 
     @Column
-    private Boolean isHoliday;
+    private Boolean isReceiveCheese;
 
     @Column
-    private Boolean isContractBond;
+    private Boolean isReceivePay;
 
     @Column
-    private Boolean isBlackList;
-
-    @Column(length = 32)
-    private String bankName;
-
-    @Column(length = 32)
-    private String bankCode;
-
-    @Column(length = 32)
-    private String bankAccount;
-
-    @Column(length = 100)
-    private String bankAccountName;
-
-    @Column(length = 20)
-    private String lat;
-
-    @Column(length = 20)
-    private String lng;
-
-    @Column
-    private LocalDateTime workStart;
-
-    @Column
-    private LocalDateTime workEnd;
-
-    @Column
-    private Float discountItemsReward;
+    private Boolean isReceivePromotion;
 
     @Column(length = 200)
     private String deletedReason;

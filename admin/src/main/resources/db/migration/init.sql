@@ -95,36 +95,36 @@ INSERT INTO admin_role_privilege_join (role_id, privilege_id) VALUES (3, 7);
 -- INSERT INTO admin_role_privileges VALUES (9, 'DASHBOARD_PRIVILEGE'); -- 결제 관리 권한
 
 
-CREATE TABLE oauth_client_details (
-                                      client_id VARCHAR(256) PRIMARY KEY,
-                                      resource_ids VARCHAR(256),
-                                      client_secret VARCHAR(256),
-                                      scope VARCHAR(256),
-                                      authorized_grant_types VARCHAR(256),
-                                      web_server_redirect_uri VARCHAR(256),
-                                      authorities VARCHAR(256),
-                                      access_token_validity INTEGER,
-                                      refresh_token_validity INTEGER,
-                                      additional_information VARCHAR(4096),
-                                      autoapprove VARCHAR(256)
-)
-    ENGINE = InnoDb DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS users (
-                                     id INT AUTO_INCREMENT PRIMARY KEY,
-                                     username VARCHAR(256) NOT NULL,
-    password VARCHAR(256) NOT NULL,
-    enabled TINYINT(1),
-    UNIQUE KEY unique_username(username)
-    )
-    ENGINE = InnoDb DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS authorities (
-    username VARCHAR(256) NOT NULL,
-    authority VARCHAR(256) NOT NULL,
-    PRIMARY KEY(username, authority)
-    )
-    ENGINE = InnoDb DEFAULT CHARSET=utf8;
+# CREATE TABLE oauth_client_details (
+#                                       client_id VARCHAR(256) PRIMARY KEY,
+#                                       resource_ids VARCHAR(256),
+#                                       client_secret VARCHAR(256),
+#                                       scope VARCHAR(256),
+#                                       authorized_grant_types VARCHAR(256),
+#                                       web_server_redirect_uri VARCHAR(256),
+#                                       authorities VARCHAR(256),
+#                                       access_token_validity INTEGER,
+#                                       refresh_token_validity INTEGER,
+#                                       additional_information VARCHAR(4096),
+#                                       autoapprove VARCHAR(256)
+# )
+#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
+#
+# CREATE TABLE IF NOT EXISTS users (
+#                                      id INT AUTO_INCREMENT PRIMARY KEY,
+#                                      username VARCHAR(256) NOT NULL,
+#     password VARCHAR(256) NOT NULL,
+#     enabled TINYINT(1),
+#     UNIQUE KEY unique_username(username)
+#     )
+#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
+#
+# CREATE TABLE IF NOT EXISTS authorities (
+#     username VARCHAR(256) NOT NULL,
+#     authority VARCHAR(256) NOT NULL,
+#     PRIMARY KEY(username, authority)
+#     )
+#     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 create table oauth_client_details (
                                       client_id varchar(256) primary key,
@@ -200,7 +200,6 @@ CREATE TABLE `cheese`.`store_groups` (
                                        `name` VARCHAR(32) NOT NULL UNIQUE  COMMENT '그룹명',
                                        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                        `updated_at` TIMESTAMP NULL DEFAULT NULL,
-                                       `deleted_at` timestamp NULL DEFAULT NULL,
                                        PRIMARY KEY (`id`)
 ) COMMENT = '스토어 그룹'
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
@@ -218,8 +217,8 @@ CREATE TABLE `cheese`.`stores` (
                                          `name` VARCHAR(50) NOT NULL COMMENT '가맹점명',
                                          `email` VARCHAR(50) DEFAULT NULL COMMENT '이메일',
                                          `business_license_number` VARCHAR(300) NOT NULL COMMENT '사업자 등록번호',
-                                         `ceo` VARCHAR(20) NOT NULL COMMENT '대표자명',
-                                         `ceo_phone` VARCHAR(20) DEFAULT NULL COMMENT '대표자 번호',
+                                         `ceo_name` VARCHAR(20) NOT NULL COMMENT '대표자명',
+                                         `ceo_phone` VARCHAR(20) NOT NULL COMMENT '대표자 번호',
                                          `fax` VARCHAR(20) DEFAULT  NULL COMMENT '팩스 번호',
                                          `address` VARCHAR(256) DEFAULT NULL COMMENT '주소',
                                          `address_extra` VARCHAR(256) DEFAULT NULL COMMENT '상세주소',
@@ -247,21 +246,21 @@ CREATE TABLE `cheese`.`stores` (
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
 VALUES('AL1', 1, 1, '기용스토어', '에디', '01092069357', '1123-21132-12312');
 
 
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
 VALUES('AL2', 1, 1, '기용스토어2', '에디', '01092069357', '1123-21132-12412');
 
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
 VALUES('AL3', 1, 1, '기용스토어3', '에디', '01092069357', '1123-21132-12512');
 
 
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
 VALUES('AL4', 1, 1, '기용스토어4', '에디', '01092069357', '1323-21132-12419');
 
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
+INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
 VALUES('AL5', 1, 1, '기용스토어5', '에디', '01092069357', '1423-21132-12510');
 
 CREATE TABLE `cheese`.`holidays` (
@@ -314,3 +313,25 @@ CREATE TABLE `cheese`.`item_images` (
                                         PRIMARY KEY (`id`)
 ) COMMENT = '상품관련 이미지 (목록 썸네일, 상단, 중단, 하단 등)'
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cheese`.`store_users` (
+                                        `id` INT unsigned NOT NULL,
+                                        `name` VARCHAR(50) NOT NULL COMMENT '이름',
+                                        `email` VARCHAR(50) NULL COMMENT '이메일',
+                                        `cp` VARCHAR(20) NOT NULL COMMENT '휴대폰번호',
+                                        `sex` CHAR(1) NULL DEFAULT 'M' COMMENT '성별',
+                                        `birth_year` VARCHAR(4) NULL COMMENT '년',
+                                        `birth_month` VARCHAR(2) NULL COMMENT '월',
+                                        `birth_day` VARCHAR(2) NULL COMMENT '일',
+                                        `is_staff` TINYINT(1) unsigned NOT NULL DEFAULT 0 COMMENT '직원 여부 (1: 직원, 0: 사장)',
+                                        `is_approve` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '승인 여부 (1: 승인, 0: 대기)',
+                                        `is_receive_push` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '푸시 알림 여부',
+                                        `is_receive_cheese` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '적립금 알림 여부 ',
+                                        `is_receive_pay` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '결제 알림 여부',
+                                        `is_receive_promotion` TINYINT(1) unsigned NOT NULL DEFAULT 1 COMMENT '프로모션/이벤트 알림 여부',
+                                        `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일자',
+                                        `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                                        `deleted_reason` VARCHAR(200) NULL DEFAULT NULL COMMENT '탈퇴 사유',
+                                        `deleted_at` TIMESTAMP NULL COMMENT '탈퇴 일자',
+                                        PRIMARY KEY (`id`))
+    COMMENT = '가맹점주 목록';
