@@ -1,8 +1,8 @@
-package com.cheese.core.domain.item;
+package com.cheese.core.domain.storeGroup;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface StoreGroupRepository extends JpaRepository<StoreGroup, Long> {
 }

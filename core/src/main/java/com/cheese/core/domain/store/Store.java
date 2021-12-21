@@ -21,9 +21,41 @@ public class StoreEntity {
     @Column(nullable = false, length = 20)
     private String storeNumber;
 
-    @Column(columnDefinition = "TEXT")
-    private String legalHeader;
+    @Column
+    private Integer storeGroupId;
 
+    @Column
+    private Integer categoryId;
+
+    @Column(nullable = false, length = 50)
+    private String name;
+
+    @Column(length = 50)
+    private String email;
+
+    @Column(nullable = false, length = 300)
+    private String businessLicenseNumber;
+
+    @Column(nullable = false, length = 20)
+    private String ceoName;
+
+    @Column(nullable = false, length = 20)
+    private String ceoPhone;
+
+    @Column(length = 20)
+    private String fax;
+
+    @Column(length = 256)
+    private String address;
+
+    @Column(length = 256)
+    private String addressExtra;
+
+    @Column(length = 256)
+    private String homepageUrl;
+
+    @Column
+    private Boolean
 //    @OneToMany(cascade = CascadeType.ALL,
 //            fetch = FetchType.LAZY,
 //            mappedBy = "userKeyEntity")

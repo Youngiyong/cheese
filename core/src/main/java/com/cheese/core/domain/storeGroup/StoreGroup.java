@@ -1,28 +1,26 @@
-package com.cheese.core.domain.itemImage;
+package com.cheese.core.domain.storeGroup;
 
 
-import javax.persistence.*;
-
+import com.cheese.core.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "item_images")
-public class ItemImageEntity {
+@Table(name = "store_groups")
+public class StoreGroupEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;    // internal
 
-    @Column(nullable = false)
-    private Long no;
+    @Column(nullable = false, length = 20)
+    private String name;
 
     @Column(columnDefinition = "TEXT")
     private String legalHeader;
@@ -35,3 +33,4 @@ public class ItemImageEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String encodedMetadataTocPayload;
 }
+
