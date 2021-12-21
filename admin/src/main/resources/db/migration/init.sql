@@ -264,6 +264,14 @@ VALUES('AL4', 1, 1, '기용스토어4', '에디', '01092069357', '1323-21132-124
 INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo, ceo_phone, business_license_number)
 VALUES('AL5', 1, 1, '기용스토어5', '에디', '01092069357', '1423-21132-12510');
 
+CREATE TABLE `cheese`.`holidays` (
+                                           `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                                           `store_id` INT UNSIGNED NOT NULL COMMENT '스토어 아이디',
+                                           `type` CHAR(1) NOT NULL DEFAULT 'M' COMMENT '수동입력 0\\n스케줄러입력 1',
+                                           `date` DATE NOT NULL COMMENT 'Y-m-d',
+                                           `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+                                           PRIMARY KEY (`id`)
+) COMMENT = '스토어 지정 휴일 테이블 ';
 
 CREATE TABLE `cheese`.`store_images` (
                                          `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -279,7 +287,7 @@ CREATE TABLE `cheese`.`store_images` (
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `cheese`.`store_items` (
+CREATE TABLE `cheese`.`items` (
                                   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                   `item_number` VARCHAR(20) NULL DEFAULT NULL,
                                   `store_id` INT UNSIGNED NOT NULL COMMENT '스토어 아이디',
@@ -294,7 +302,7 @@ CREATE TABLE `cheese`.`store_items` (
 ) COMMENT = '상품'
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
-CREATE TABLE `cheese`.`store_item_images` (
+CREATE TABLE `cheese`.`item_images` (
                                         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                         `item_id` INT UNSIGNED NOT NULL,
                                         `type` VARCHAR(16) NOT NULL COMMENT '이미지 타입',

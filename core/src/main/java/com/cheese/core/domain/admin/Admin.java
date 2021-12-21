@@ -44,7 +44,6 @@ public class Admin extends BaseTimeEntity {
     @Column(name ="isActive", nullable = false)
     private int isActive;
 
-    @LastModifiedDate
     @Column(name = "deleted_at", insertable = false)
     private LocalDateTime deletedAt;
 

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -17,37 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    /**
-     * 지원하지 않은 HTTP method 호출 할 경우 발생
-     */
-//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-//    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-//        log.error("handleHttpRequestMethodNotSupportedException", e);
-//
-//        final ErrorResponse response = ErrorResponse
-//                .builder()
-//                .status(HttpStatus.METHOD_NOT_ALLOWED.value())
-//                .message(e.getMessage());
-//
-//        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
-//    }
-
-    /**
-     * Authentication 객체가 필요한 권한을 보유하지 않은 경우 발생합
-     */
-//    @ExceptionHandler(AccessDeniedException.class)
-//    protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
-//        log.error("handleAccessDeniedException", e);
-//
-//        final ErrorResponse response = ErrorResponse
-//                .builder()
-//                .status(ErrorCode.HANDLE_ACCESS_DENIED.getStatus())
-//                .message(e.getMessage());
-//
-//        return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
-//    }
-
 
 
     /**
@@ -72,16 +42,27 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        log.error("handleAllException", e);
-
+        log.error("handleCustomException", e);
         ErrorCode errorCode = e.getErrorCode();
 
         ErrorResponse response = ErrorResponse
                 .builder()
                 .status(errorCode.getStatus())
                 .code(errorCode.getCode())
-                .message(e.toString());
+                .message(errorCode.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.resolve(errorCode.getStatus()));
     }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("handleEntityNotFoundException", e);
+
+        ErrorResponse response = ErrorResponse
+                .builder()
+                .code(ErrorCode.INTERNAL_SERVER_ERROR.getCode());
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

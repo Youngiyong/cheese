@@ -1,7 +1,6 @@
 package com.cheese.admin.controller.v1;
 
 import com.cheese.admin.error.ErrorCode;
-import com.cheese.admin.exception.CouponNotFoundException;
 import com.cheese.admin.exception.CustomException;
 import com.cheese.admin.exception.InvalidParameterException;
 import com.cheese.admin.model.request.Member;
@@ -18,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 public class HealthCheckController {
 
-    @Operation(summary = "test hello", description = "hello api example")
+    @Operation(summary = "health check", description = "health api example")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
@@ -47,7 +46,7 @@ public class HealthCheckController {
             case "1":
                 System.out.println("hi");
 //                break;
-                throw new CouponNotFoundException(ErrorCode.EMAIL_DUPLICATION);
+                throw new CustomException(ErrorCode.EMAIL_DUPLICATION);
             case "3":
                 int a = 3 / 0;
                 break;
