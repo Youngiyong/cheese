@@ -224,6 +224,7 @@ CREATE TABLE `cheese`.`stores` (
                                          `address` VARCHAR(256) DEFAULT NULL COMMENT '주소',
                                          `address_extra` VARCHAR(256) DEFAULT NULL COMMENT '상세주소',
                                          `homepage_url` VARCHAR(256) DEFAULT NULL COMMENT '홈페이지 주소',
+                                         `is_approve` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '승인 여부',
                                          `is_active` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '활성 여부',
                                          `is_holiday` TINYINT(1) NOT NULL DEFAULT '0',
                                          `is_contract_bond` TINYINT(1) unsigned NOT NULL DEFAULT 0 COMMENT '계약 이행 보증서 제출 여부',
