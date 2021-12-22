@@ -18,7 +18,10 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "C001", "Internal Server Error"),
     // Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
-    LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid");
+    LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
+
+    INTERNAL_ORDER_CONVERT_SERVER_ERROR(500, "C800", "Internal Server Error");
+
 //    ATTESTATION_CERTIFICATE_ERROR(1),
 //    U2F_ATTESTATION_KEY_NOT_ECC_TYPE(2),
 //    U2F_ATTESTATION_USER_KEY_INVALID(3),

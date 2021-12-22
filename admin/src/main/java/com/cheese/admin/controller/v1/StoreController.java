@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.cheese.admin.helper.PaginationHelper.orderByConvert;
+
 @RequestMapping("/v1/stores")
 @RestController
 public class StoreController {
@@ -26,53 +29,37 @@ public class StoreController {
     @Autowired
     StoreRepository storeRepository;
 
-    private Sort.Direction getSortDirection(String direction) {
-        if (direction.equals("asc")) {
-            return Sort.Direction.ASC;
-        } else if (direction.equals("desc")) {
-            return Sort.Direction.DESC;
-        }
-
-        return Sort.Direction.ASC;
-    }
-
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAllStores(
             @RequestParam(required = false) String name,
+            @RequestParam(required = false) String ceoName,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id,desc") String[] sort){
         try {
-            List<Order> orders = new ArrayList<Order>();
 
-            if (sort[0].contains(",")) {
-                // will sort more than 2 fields
-                // sortOrder="field, direction"
-                for (String sortOrder : sort) {
-                    String[] _sort = sortOrder.split(",");
-                    orders.add(new Order(getSortDirection(_sort[1]), _sort[0]));
-                }
-            } else {
-                // sort=[field, direction]
-                orders.add(new Order(getSortDirection(sort[1]), sort[0]));
-            }
 
-            List<Store> stores = new ArrayList<Store>();
+            List<Store> stores = new ArrayList<>();
+            List<Order> orders = orderByConvert(sort);
             Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
             Page<Store> pageTuts;
-            if (name == null)
+            if (name == null && ceoName == null)
                 pageTuts = storeRepository.findAll(pagingSort);
-            else
+            else if(name != null)
                 pageTuts = storeRepository.findByNameContaining(name, pagingSort);
+            else
+                pageTuts = storeRepository.findByCeoNameContaining(ceoName, pagingSort);
 
             stores = pageTuts.getContent();
-
             Map<String, Object> response = new HashMap<>();
-            response.put("stores", stores);
             response.put("currentPage", pageTuts.getNumber());
             response.put("totalItems", pageTuts.getTotalElements());
             response.put("totalPages", pageTuts.getTotalPages());
+            response.put("numberOfElement", pageTuts.getNumberOfElements());
+            response.put("size", pageTuts.getSize());
+            response.put("pageable", pageTuts.getPageable());
+            response.put("data", stores);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {

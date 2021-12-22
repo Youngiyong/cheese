@@ -246,22 +246,22 @@ CREATE TABLE `cheese`.`stores` (
     ENGINE = InnoDb DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
-VALUES('AL1', 1, 1, '기용스토어', '에디', '01092069357', '1123-21132-12312');
-
-
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
-VALUES('AL2', 1, 1, '기용스토어2', '에디', '01092069357', '1123-21132-12412');
-
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
-VALUES('AL3', 1, 1, '기용스토어3', '에디', '01092069357', '1123-21132-12512');
-
-
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
-VALUES('AL4', 1, 1, '기용스토어4', '에디', '01092069357', '1323-21132-12419');
-
-INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
-VALUES('AL5', 1, 1, '기용스토어5', '에디', '01092069357', '1423-21132-12510');
+# INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
+# VALUES('AL1', 1, 1, '기용스토어', '에디', '01092069357', '1123-21132-12312');
+#
+#
+# INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
+# VALUES('AL2', 1, 1, '기용스토어2', '에디', '01092069357', '1123-21132-12412');
+#
+# INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
+# VALUES('AL3', 1, 1, '기용스토어3', '에디', '01092069357', '1123-21132-12512');
+#
+#
+# INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
+# VALUES('AL4', 1, 1, '기용스토어4', '에디', '01092069357', '1323-21132-12419');
+#
+# INSERT INTO `cheese`.`stores` (store_number, store_group_id, category_id, name, ceo_name, ceo_phone, business_license_number)
+# VALUES('AL5', 1, 1, '기용스토어5', '에디', '01092069357', '1423-21132-12510');
 
 CREATE TABLE `cheese`.`holidays` (
                                            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
