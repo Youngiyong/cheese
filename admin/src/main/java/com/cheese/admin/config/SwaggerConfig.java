@@ -5,15 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -21,12 +20,27 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.OAS_30) // open api spec 3.0
+        return new Docket(DocumentationType.SWAGGER_2) // open api spec 3.0
+                .apiInfo(apiInfo())
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
     }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfo("Cheese Admin API",
+                "Cheese Admin API.",
+                "1.0",
+                "Terms of service",
+                new Contact("Cheese", "www.amlabs.co.kr", "eddy@amlabs.co.kr"),
+                "License of API",
+                "API license URL",
+                Collections.emptyList());
+    }
+
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
