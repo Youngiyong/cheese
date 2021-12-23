@@ -20,6 +20,9 @@ public enum ErrorCode {
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
 
+    //Store
+    STORE_NOT_FOUND(404, "C100", "Store is not Found"),
+
     INTERNAL_ORDER_CONVERT_SERVER_ERROR(500, "C800", "Internal Server Error");
 
 //    ATTESTATION_CERTIFICATE_ERROR(1),
