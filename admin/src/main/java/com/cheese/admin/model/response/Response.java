@@ -1,4 +1,4 @@
-package com.cheese.core.dto.response;
+package com.cheese.admin.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Setter
 @Getter
-public class CheeseResponse<T> {
+public class Response<T> {
 
     private int status;
     private String code;
